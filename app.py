@@ -3,11 +3,11 @@ import psycopg2
 
 app = Flask(__name__)
 
-# Configuración de PostgreSQL - ¡MODIFICA CON TUS CREDENCIALES!
+# Configuración de PostgreSQL
 DB_CONFIG = {
     "dbname": "jcf_db",
     "user": "alx",
-    "password": "1234",  # Cambiar por tu contraseña real
+    "password": "1234",  # Cambiar contraseña
     "host": "localhost",
     "port": "5432"
 }
