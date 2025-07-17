@@ -1,0 +1,24 @@
+# Entornos virtuales
+venv/
+env/
+.venv/
+
+# Archivos de Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Configuración y entornos
+.env
+.venv
+
+# Base de datos (si usas SQLite)
+*.sqlite
+*.sqlite3
+
+# Flask
+instance/
+
+# Sistema
+.DS_Store

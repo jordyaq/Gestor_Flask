@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contactos JCF</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        :root {
+            --color-primary: #9c1d2b;
+            --color-secondary: #7a1622;
+            --color-accent: #c1272d;
+            --color-light: #f5e6e8;
+        }
+        
+        body {
+            background-color: #f9f9f9;
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+        
+        main {
+            flex: 1 0 auto;
+            padding: 20px 0;
+        }
+        
+        .header-logo {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .logo-img {
+            height: 60px;
+            max-width: 200px;
+            object-fit: contain;
+        }
+        
+        .brand-header {
+            background: var(--color-primary);
+            color: white;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+        
+        .btn-custom {
+            background: var(--color-primary) !important;
+        }
+        
+        .btn-custom:hover {
+            background: var(--color-secondary) !important;
+        }
+        
+        .btn-delete {
+            background: var(--color-accent) !important;
+        }
+        
+        .collection-item {
+            transition: all 0.3s;
+        }
+        
+        .collection-item:hover {
+            background-color: var(--color-light) !important;
+        }
+        
+        .edit-form {
+            margin-top: 15px;
+            padding: 15px;
+            background: #f9f9f9;
+            border-radius: 4px;
+            border-left: 3px solid var(--color-primary);
+        }
+        
+        .footer-custom {
+            background: var(--color-primary);
+            color: white;
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+        
+        .input-field label {
+            color: var(--color-primary);
+        }
+        
+        .input-field input:focus + label {
+            color: var(--color-accent) !important;
+        }
+        
+        .input-field input:focus {
+            border-bottom: 1px solid var(--color-accent) !important;
+            box-shadow: 0 1px 0 0 var(--color-accent) !important;
+        }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <div class="header-logo container">
+            <img src="logo1.png" alt="Logo CDMX" class="logo-img">
+            <img src="logo2.png" alt="Logo Gobierno" class="logo-img">
+        </div>
+        <div class="brand-header center">
+            <h4>Registro de Contactos</h4>
+            <p>Gobierno de la Ciudad de México</p>
+        </div>
+    </header>
+
+    <main class="container">
+       
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Agregar Nuevo Contacto</span>
+                <form method="POST" action="/agregar">
+                    <div class="row">
+                        <div class="input-field col s12 m4">
+                            <i class="material-icons prefix">person</i>
+                            <input id="nombre" type="text" name="nombre" class="validate" required>
+                            <label for="nombre">Nombre Completo</label>
+                        </div>
+                        <div class="input-field col s12 m4">
+                            <i class="material-icons prefix">email</i>
+                            <input id="correo" type="email" name="correo" class="validate" required>
+                            <label for="correo">Correo Electrónico</label>
+                        </div>
+                        <div class="input-field col s12 m4">
+                            <i class="material-icons prefix">phone</i>
+                            <input id="telefono" type="tel" name="telefono" class="validate" required>
+                            <label for="telefono">Teléfono</label>
+                        </div>
+                    </div>
+                    <div class="center">
+                        <button class="btn waves-effect waves-light btn-custom" type="submit">
+                            <i class="material-icons left">add</i>Agregar Contacto
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+       
+        <div class="card">
+            <div class="card-content">
+                <span class="card-title">Contactos Registrados</span>
+                
+                {% if contactos %}
+                <ul class="collection">
+                    {% for contacto in contactos %}
+                    <li class="collection-item avatar">
+                        <i class="material-icons circle red">person</i>
+                        <span class="title"><strong>{{ contacto[1] }}</strong></span>
+                        <p>
+                            {{ contacto[2] }}<br>
+                            {{ contacto[3] }}
+                        </p>
+                        <div class="secondary-content">
+                            <a class="btn-floating btn-small waves-effect waves-light blue modal-trigger" 
+                               href="#modal-edit-{{ contacto[0] }}">
+                                <i class="material-icons">edit</i>
+                            </a>
+                            <a class="btn-floating btn-small waves-effect waves-light btn-delete" 
+                               href="/eliminar/{{ contacto[0] }}">
+                                <i class="material-icons">delete</i>
+                            </a>
+                        </div>
+                        
+                       
+                        <div id="modal-edit-{{ contacto[0] }}" class="modal">
+                            <div class="modal-content">
+                                <h4>Editar Contacto</h4>
+                                <form method="POST" action="/editar/{{ contacto[0] }}">
+                                    <div class="row">
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">person</i>
+                                            <input id="edit-nombre-{{ contacto[0] }}" type="text" name="nombre" 
+                                                   value="{{ contacto[1] }}" required>
+                                            <label for="edit-nombre-{{ contacto[0] }}">Nombre</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">email</i>
+                                            <input id="edit-correo-{{ contacto[0] }}" type="email" name="correo" 
+                                                   value="{{ contacto[2] }}" required>
+                                            <label for="edit-correo-{{ contacto[0] }}">Correo</label>
+                                        </div>
+                                        <div class="input-field col s12">
+                                            <i class="material-icons prefix">phone</i>
+                                            <input id="edit-telefono-{{ contacto[0] }}" type="tel" name="telefono" 
+                                                   value="{{ contacto[3] }}" required>
+                                            <label for="edit-telefono-{{ contacto[0] }}">Teléfono</label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="modal-close btn grey">Cancelar</button>
+                                        <button type="submit" class="btn btn-custom">Guardar Cambios</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="center" style="padding: 30px 0">
+                    <i class="material-icons large">group</i>
+                    <h5>No hay contactos registrados</h5>
+                    <p>Comienza agregando tu primer contacto</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    
+    <footer class="footer-custom">
+        <div class="container">
+            <div class="row">
+                <div class="col s12 center">
+                    <p>© 2025 Gobierno de la Ciudad de México</p>
+                    <p>Sistema desarrollador por JALX</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts Materialize -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            // Inicializar modales
+            $('.modal').modal();
+            
+            // Inicializar elementos flotantes
+            M.updateTextFields();
+        });
+    </script>
+</body>
+</html>
