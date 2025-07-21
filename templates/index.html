@@ -224,6 +224,17 @@
                 {% endif %}
             </div>
         </div>
+
+        <!-- Botones para generar PDF y CSV -->
+        <div class="center" style="margin-top: 30px;">
+            <a href="/generar_pdf" class="btn waves-effect waves-light btn-custom">
+            <i class="material-icons left">picture_as_pdf</i>Generar Reporte PDF
+            </a>
+            <a href="/generar_csv" class="btn waves-effect waves-light btn-custom" style="margin-left: 10px;">
+            <i class="material-icons left">grid_on</i>Descargar CSV
+            </a>
+        </div>
+        
     </main>
 
     
@@ -238,15 +249,14 @@
         </div>
     </footer>
 
-    <!-- Scripts Materialize -->
+    
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <script>
         $(document).ready(function(){
-            // Inicializar modales
+            
             $('.modal').modal();
             
-            // Inicializar elementos flotantes
             M.updateTextFields();
         });
     </script>
